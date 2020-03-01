@@ -7,15 +7,15 @@ import numpy as np
 fname='csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv'
 
 population_normalise = True
+min_infected = 1
 
 def isNaN(num):
     return num != num
 
 
 countries = ['Italy', 'Austria', 'Iran','Switzerland','Germany','Mainland China']
-population={'Italy':60.48e6, 'Austria':8.822e6, 'Iran':81.16e6,'Switzerland':8.57e6,'Germany':82.79e6,'Mainland China':1.386e9}
-# countries = ['Italy', 'Austria', 'Iran','Switzerland','Germany']
-# countries=['Mainland China']
+population = {'Italy':60.48e6, 'Austria':8.822e6, 'Iran':81.16e6,'Switzerland':8.57e6,'Germany':82.79e6,'Mainland China':1.386e9}
+
 
 for country in countries:
     df = pd.read_csv(fname)
@@ -41,7 +41,7 @@ for country in countries:
 
         infected.append(total_infected_state)
     # find first non-zero infected date
-    ix = np.argmax(np.array(infected) > 0)
+    ix = np.argmax(np.array(infected) >= min_infected)
     synched_infected = np.array(infected[ix:],dtype=np.float32)
 
     if population_normalise:
