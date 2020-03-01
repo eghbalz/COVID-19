@@ -6,13 +6,15 @@ import numpy as np
 
 fname='csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv'
 
+population_normalise = True
 
 def isNaN(num):
     return num != num
 
 
-# countries = ['Italy', 'Austria', 'Iran','Switzerland','Germany','Mainland China']
-countries = ['Italy', 'Austria', 'Iran','Switzerland','Germany']
+countries = ['Italy', 'Austria', 'Iran','Switzerland','Germany','Mainland China']
+population={'Italy':60.48e6, 'Austria':8.822e6, 'Iran':81.16e6,'Switzerland':8.57e6,'Germany':82.79e6,'Mainland China':1.386e9}
+# countries = ['Italy', 'Austria', 'Iran','Switzerland','Germany']
 # countries=['Mainland China']
 
 for country in countries:
@@ -40,12 +42,21 @@ for country in countries:
         infected.append(total_infected_state)
     # find first non-zero infected date
     ix = np.argmax(np.array(infected) > 0)
-    plt.plot(infected[ix:],label=country)
+    synched_infected = np.array(infected[ix:],dtype=np.float32)
+
+    if population_normalise:
+        synched_infected/=population[country]
+
+    plt.plot(synched_infected,label=country)
 
 plt.legend()
-plt.title('Infections in {}'.format(countries))
+plt.title('Infections')
 plt.xlabel('Days')
-plt.ylabel('Total Infected')
+if population_normalise:
+    plt.ylabel('Total Infected (% of population)')
+else:
+    plt.ylabel('Total Infected (person)')
+plt.tight_layout()
 # plt.yscale('log',basey=2)
 # plt.show()
 plt.savefig('infected_plots')
