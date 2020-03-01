@@ -38,8 +38,9 @@ for country in countries:
             total_infected_state +=infected_state[day].values[0]
 
         infected.append(total_infected_state)
-
-    plt.plot(infected,label=country)
+    # find first non-zero infected date
+    ix = np.argmax(np.array(infected) > 0)
+    plt.plot(infected[ix:],label=country)
 
 plt.legend()
 plt.title('Infections in {}'.format(countries))
