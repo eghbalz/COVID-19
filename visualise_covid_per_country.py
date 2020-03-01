@@ -7,7 +7,7 @@ import numpy as np
 fname='csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv'
 
 population_normalise = True
-min_infected = 1
+min_infected = 5
 
 def isNaN(num):
     return num != num
