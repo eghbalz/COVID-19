@@ -11,13 +11,13 @@ fname='csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirm
 population_normalise = False
 
 # how many weeks to estimate by exponential function
-num_weeks=12
+num_weeks = 12
 
 # syncronise the beginning of infection by the minimum infected
 syncronise = False
 # the minimum infected for synchrinisation
 min_infected = 20
-
+zoom=5
 def isNaN(num):
     return num != num
 
@@ -30,7 +30,8 @@ def synch(data, min_infected):
 
 countries = ['Italy', 'Austria', 'Iran','Switzerland','Germany','Mainland China']
 population = {'Italy':60.48e6, 'Austria':8.822e6, 'Iran':81.16e6,'Switzerland':8.57e6,'Germany':82.79e6,'Mainland China':1.386e9}
-countries = ['Italy', 'Austria', 'Iran','Switzerland','Germany']
+# countries = ['Italy', 'Austria', 'Iran','Switzerland','Germany']
+country_dict ={'Italy':'IT', 'Austria':'AT', 'Iran':'IR','Switzerland':'CH','Germany':'DE','Mainland China':'CN'}
 
 
 fig, ax = plt.subplots(figsize=[5,4])
@@ -71,7 +72,7 @@ def plot_infections(countries, fname, ax):
         if population_normalise:
             synched_infected /= population[country]
 
-        ax.plot(synched_infected, label=country)
+        ax.plot(synched_infected, label=country_dict[country])
         len_inf.append(len(synched_infected))
         synched_infected_dic[country] = synched_infected
 
@@ -85,23 +86,23 @@ def plot_infections(countries, fname, ax):
     synched_exp_data_index = [p - exp_date_index[ix] for p in exp_date_index[ix:]]
 
     # plot expo. data
-    ax.plot(synched_exp_data_index, synched_exp_data, label='Exponen.')
+    ax.plot(synched_exp_data_index, synched_exp_data, label='Exp.')
 
 
 # plot infections
 plot_infections(countries, fname, ax)
 # zoom in
-axins = zoomed_inset_axes(ax, 3, loc=6) # zoom = 6
+axins = zoomed_inset_axes(ax, zoom, loc=6)
 # plot again for the zoomed-in region
 plot_infections(countries, fname, axins)
 
 
 # sub region of the original plot
-start_date, end_date, start_infection, end_infection = 30, 45, 0, 5000
+start_date, end_date, start_infection, end_infection = 35, 45, 0, 5000
 axins.set_xlim(start_date, end_date)
 axins.set_ylim(start_infection, end_infection)
 # set ticks off for zoomed in plot
-plt.xticks(visible=False)
+# plt.xticks(visible=False)
 plt.yticks(visible=False)
 # put zoommed in plot in place
 mark_inset(ax, axins, loc1=3, loc2=4, fc="none", ec="0.5")
