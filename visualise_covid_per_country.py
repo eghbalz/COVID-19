@@ -46,12 +46,14 @@ plot_infections(countries, fname, axins,min_infected,
                 simulate_country,num_weeks,syncronise,current_growth_rate)
 
 
-
+# limit the borders of the zoom plot
 axins.set_xlim(start_date, end_date)
 axins.set_ylim(start_infection, end_infection)
+
 # set ticks off for zoomed in plot
 # plt.xticks(visible=False)
 # plt.yticks(visible=False)
+
 # put zoommed in plot in place
 mark_inset(ax, axins, loc1=3, loc2=4, fc="none", ec="0.5")
 
