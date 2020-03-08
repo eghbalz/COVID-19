@@ -17,7 +17,9 @@ num_weeks = 12
 syncronise = False
 # the minimum infected for synchrinisation
 min_infected = 20
+# how much zoom in
 zoom=5
+
 def isNaN(num):
     return num != num
 
